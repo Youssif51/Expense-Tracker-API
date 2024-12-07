@@ -1,3 +1,46 @@
+# Expense Tracker API
+
+## Overview
+
+The **Expense Tracker API** is a RESTful API designed to help users track and manage their expenses. It allows users to create, retrieve, update, and delete expenses, with additional filtering capabilities based on various time periods (e.g., past week, last month, last 3 months, custom date range). The API uses **JWT** for authentication and interacts with a **PostgreSQL** database using **Prisma ORM**.
+
+## Features
+
+- **User Authentication:** JWT-based authentication to ensure secure access to user data.
+- **Expense Management:**
+  - Create new expenses with a description, category, and amount.
+  - Update and delete expenses.
+  - Retrieve all expenses or filter them based on time periods (e.g., past week, last month, last 3 months, or custom date range).
+- **Category Management:** Expenses are categorized into predefined categories (e.g., groceries, entertainment, etc.) defined using an enum.
+- **Filtering:** Filter expenses based on:
+  - Past Week
+  - Last Month
+  - Last 3 Months
+  - Custom Date Range
+
+## Tech Stack
+
+- **Node.js** - Backend runtime environment.
+- **Express** - Web framework for building the API.
+- **Prisma ORM** - Object-relational mapper for interacting with PostgreSQL.
+- **PostgreSQL** - Database to store expense records.
+- **JWT (JSON Web Token)** - For secure user authentication.
+- **Bcrypt.js** - For password hashing.
+
+## Installation
+
+### Prerequisites
+
+- Node.js (v16 or later)
+- PostgreSQL
+
+### Clone the repository
+
+```bash
+git clone https://github.com/yourusername/expense-tracker-api.git
+cd expense-tracker-api
+
+
 # Expense Tracker API Setup Guide
 
 ## Install Dependencies
