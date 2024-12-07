@@ -1,6 +1,3 @@
-//1-bcrbtjs
-//2-jwt
-//3-prisma
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { PrismaClient } = require("@prisma/client");
@@ -9,7 +6,7 @@ const prisma = new PrismaClient();
 
 const signup = async (req, res) => {
   const { username, email, password } = req.body;
-  console.log(username, email, password);
+
   try {
     const hashedPassword = bcrypt.hashSync(password, 10);
 

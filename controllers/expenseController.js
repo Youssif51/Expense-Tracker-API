@@ -1,5 +1,11 @@
 const jwt = require("jsonwebtoken");
 const { PrismaClient } = require("@prisma/client");
+const {
+  filterPastWeek,
+  filterLastMonth,
+  filterLastThreeMonths,
+  filterCustomDates,
+} = require("../services/expenseService");
 
 const prisma = new PrismaClient();
 
@@ -30,7 +36,7 @@ const getExpense = async (req, res) => {
 
     const expenses = await prisma.expense.findMany({
       where: {
-        userId, // جلب كل النفقات الخاصة بالمستخدم
+        userId,
       },
     });
 
@@ -46,9 +52,8 @@ const updateExpense = async (req, res) => {
   const { amount, category, description } = req.body;
 
   try {
-    const userId = req.user.id; // الـ Middleware بيمرر المستخدم
+    const userId = req.user.id;
 
-    // التحقق من ملكية المستخدم للنفقة
     const expense = await prisma.expense.findUnique({
       where: { id: parseInt(id) },
     });
@@ -81,9 +86,8 @@ const deleteExpense = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const userId = req.user.id; // التحقق من المستخدم الحالي
+    const userId = req.user.id;
 
-    // التحقق من ملكية المستخدم للنفقة
     const existingExpense = await prisma.expense.findUnique({
       where: { id: parseInt(id) },
     });
@@ -94,7 +98,6 @@ const deleteExpense = async (req, res) => {
         .json({ message: "Not authorized to delete this expense" });
     }
 
-    // حذف النفقة
     await prisma.expense.delete({
       where: {
         id: parseInt(id),
@@ -108,4 +111,45 @@ const deleteExpense = async (req, res) => {
   }
 };
 
-module.exports = { postExpense, getExpense, updateExpense, deleteExpense };
+const getFilteredExpenses = async (req, res) => {
+  try {
+    const { filterType, startDate, endDate } = req.query;
+    const userId = req.user.id;
+
+    let expenses;
+
+    switch (filterType) {
+      case "pastWeek":
+        expenses = await filterPastWeek(userId);
+        break;
+      case "lastMonth":
+        expenses = await filterLastMonth(userId);
+        break;
+      case "last3Months":
+        expenses = await filterLastThreeMonths(userId);
+        break;
+      case "custom":
+        if (!startDate || !endDate) {
+          return res.status(400).json({
+            message: "Start date and end date are required for custom filter.",
+          });
+        }
+        expenses = await filterCustomDates(userId, startDate, endDate);
+        break;
+      default:
+        return res.status(400).json({ message: "Invalid filter type." });
+    }
+
+    res.status(200).json({ expenses });
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching expenses.", error });
+  }
+};
+
+module.exports = {
+  postExpense,
+  getExpense,
+  updateExpense,
+  deleteExpense,
+  getFilteredExpenses,
+};
