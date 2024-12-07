@@ -27,8 +27,12 @@ The **Expense Tracker API** is a RESTful API designed to help users track and ma
 - **JWT (JSON Web Token)** - For secure user authentication.
 - **Bcrypt.js** - For password hashing.
 
-## Installation
+## Install Dependencies
+Run the following command to install all the required dependencies:
 
+```bash
+npm install
+```
 ### Prerequisites
 
 - Node.js (v16 or later)
@@ -39,16 +43,6 @@ The **Expense Tracker API** is a RESTful API designed to help users track and ma
 ```bash
 git clone https://github.com/yourusername/expense-tracker-api.git
 cd expense-tracker-api
-
-
-# Expense Tracker API Setup Guide
-
-## Install Dependencies
-
-Run the following command to install all the required dependencies:
-
-```bash
-npm install
 ```
 
 ## Configure Environment Variables
